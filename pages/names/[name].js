@@ -108,8 +108,8 @@ function RatingProgressBar () {
 }
 
 function LikeButton (props) {
-  const saveLike = props.voting.saveLike
-  const handleClick = () => saveLike(props.name)
+  const isLiked = true
+  const handleClick = () => props.voting.vote(props.name, isLiked)
 
   return (
     <span className='ml-3 inline-flex rounded-md shadow-sm'>
@@ -125,8 +125,8 @@ function LikeButton (props) {
 }
 
 function DontLikeButton (props) {
-  const saveDontLike = props.voting.saveDontLike
-  const handleClick = () => saveDontLike(props.name)
+  const isLiked = false
+  const handleClick = () => props.voting.vote(props.name, isLiked)
 
   return (
     <span className='inline-flex rounded-md shadow-sm'>

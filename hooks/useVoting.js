@@ -1,21 +1,22 @@
 import useParents from './useParents'
+import ky from 'ky-universal'
 
 export default function useVoting () {
   const [currentParentName, otherParentName, toggleParent] = useParents()
 
-  function saveLike (name) {
-    console.log(`Saving ${currentParentName} likes ${name}`)
-  }
-
-  function saveDontLike (name) {
-    console.log(`Saving ${currentParentName} doesn't like ${name}`)
+  async function vote (name, isLiked) {
+    await ky.post(`/api/users/${currentParentName}/votes`, {
+      json: {
+        name,
+        isLiked
+      }
+    })
   }
 
   return {
     currentParentName,
     otherParentName,
     toggleParent,
-    saveLike,
-    saveDontLike
+    vote
   }
 }
