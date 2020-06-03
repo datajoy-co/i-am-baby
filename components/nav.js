@@ -1,25 +1,6 @@
 import { useState } from 'react'
 import Name from './name'
 
-function getOtherParentName (parentName) {
-  if (parentName === 'kristin') {
-    return 'paul'
-  }
-
-  return 'kristin'
-}
-
-function useParents () {
-  const [currentParentName, setParentName] = useState('kristin')
-  const otherParentName = getOtherParentName(currentParentName)
-
-  function toggleParent () {
-    setParentName(otherParentName)
-  }
-
-  return [currentParentName, otherParentName, toggleParent]
-}
-
 function ProfileImage (props) {
   const kristinSrc = '/kristin.jpeg'
   const paulSrc = '/paul.jpeg'
@@ -53,9 +34,10 @@ function useToggle (initialState) {
   return [state, toggle]
 }
 
-function ProfileDropdown () {
-  const [currentParentName, otherParentName, toggleParent] = useParents()
+function ProfileDropdown (props) {
+  const voting = props.voting
   const [showSwitcher, toggleSwitcher] = useToggle(false)
+
   return (
     <div className='ml-3 relative'>
       <div>
@@ -67,7 +49,7 @@ function ProfileDropdown () {
           onClick={toggleSwitcher}
           onBlur={toggleSwitcher}
         >
-          <ProfileImage parentName={currentParentName} />
+          <ProfileImage parentName={voting.currentParentName} />
         </button>
       </div>
       {/* <!-- */}
@@ -79,15 +61,15 @@ function ProfileDropdown () {
       {/* --> */}
       {showSwitcher && (
         <SwitchParent
-          otherParentName={otherParentName}
-          toggleParent={toggleParent}
+          otherParentName={voting.otherParentName}
+          toggleParent={voting.toggleParent}
         />
       )}
     </div>
   )
 }
 
-export default function () {
+export default function nav (props) {
   return (
     <nav className='bg-white shadow-sm'>
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
@@ -118,15 +100,10 @@ export default function () {
               >
                 Names You Both Like
               </a>
-              <span className='inline-flex items-center'>
-                <span className='inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium leading-4 bg-gray-100 text-gray-400'>
-                  23
-                </span>
-              </span>
             </div>
           </div>
           <div className='hidden sm:ml-6 sm:flex sm:items-center'>
-            <ProfileDropdown />
+            <ProfileDropdown voting={props.voting} />
           </div>
           <div className='-mr-2 flex items-center sm:hidden'>
             {/* Mobile menu button --> */}

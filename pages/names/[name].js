@@ -37,32 +37,6 @@ function percent (normalized) {
   return number + '%'
 }
 
-function PrimaryActionButton (props) {
-  return (
-    <span className='inline-flex rounded-md shadow-sm ml-3'>
-      <button
-        type='button'
-        className='inline-flex items-center px-6 py-2 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150'
-      >
-        Yes
-      </button>
-    </span>
-  )
-}
-
-function SecondaryActionButton () {
-  return (
-    <span className='inline-flex rounded-md shadow-sm ml-3'>
-      <button
-        type='button'
-        className='inline-flex items-center px-6 py-2 border border-gray-300 text-base leading-6 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150'
-      >
-        No
-      </button>
-    </span>
-  )
-}
-
 function StatsBlock (props) {
   return (
     <div className='bg-white overflow-hidden shadow rounded-lg'>
@@ -133,6 +107,49 @@ function RatingProgressBar () {
   )
 }
 
+function LikeButton (props) {
+  const saveLike = props.voting.saveLike
+  const handleClick = () => saveLike(props.name)
+
+  return (
+    <span className='ml-3 inline-flex rounded-md shadow-sm'>
+      <button
+        type='submit'
+        className='inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out'
+        onClick={handleClick}
+      >
+        Like
+      </button>
+    </span>
+  )
+}
+
+function DontLikeButton (props) {
+  const saveDontLike = props.voting.saveDontLike
+  const handleClick = () => saveDontLike(props.name)
+
+  return (
+    <span className='inline-flex rounded-md shadow-sm'>
+      <button
+        type='button'
+        className='bg-white py-2 px-4 border border-gray-300 rounded-md text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800 transition duration-150 ease-in-out'
+        onClick={handleClick}
+      >
+        Don't Like
+      </button>
+    </span>
+  )
+}
+
+function ActionButtons (props) {
+  return (
+    <div className='mt-5 flex justify-end'>
+      <DontLikeButton voting={props.voting} name={props.name} />
+      <LikeButton voting={props.voting} name={props.name} />
+    </div>
+  )
+}
+
 export default function (props) {
   const router = useRouter()
   const { name } = router.query
@@ -151,6 +168,7 @@ export default function (props) {
         <div className='max-w-7xl mx-auto sm:px-6 lg:px-8'>
           <Statistics {...props.statistics} />
           <Chart {...props.statistics} />
+          <ActionButtons voting={props.voting} name={name} />
         </div>
       </main>
     </>
