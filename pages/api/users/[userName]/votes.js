@@ -1,31 +1,25 @@
-const votes = []
+import * as database from '../../../../library/database'
+import { capitalize } from '../../../../library/helpers'
 
 async function createVote (request, response) {
-  const userName = request.query.userName
-  const vote = {
-    userName: request.query.userName,
-    name: request.body.name,
-    isLiked: request.body.isLiked
-  }
+  const username = request.query.username
+  const name = request.body.name
+  const liked = request.body.liked
 
-  votes.push(vote)
-  console.log(votes)
+  await database.createVote(username, name, liked)
 
   response.statusCode = 201
   response.end()
 }
 
 async function getVotesForUser (request, response) {
-  const userName = request.query.userName
-  const votesForUser = votes.filter(vote => vote.name === userName)
-  console.log(votes)
-
+  const username = request.query.username
+  const votesForUser = await database.getVotesForUser(username)
   response.statusCode = 200
   response.json(votesForUser)
 }
 
 export default async function (request, response) {
-  console.log('hit the route')
   if (request.method === 'POST') {
     return createVote(request, response)
   } else if (request.method === 'GET') {

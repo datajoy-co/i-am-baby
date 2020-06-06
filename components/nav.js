@@ -1,5 +1,7 @@
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
-import Name from './name'
+import { capitalize } from '../library/helpers'
 
 function ProfileImage (props) {
   const kristinSrc = '/kristin.jpeg'
@@ -18,7 +20,7 @@ function SwitchParent (props) {
           className='block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out'
           onMouseDown={handleClick}
         >
-          Switch to <Name>{props.otherParentName}</Name> →
+          Switch to {capitalize(props.otherParentName)} →
         </a>
       </div>
     </div>
@@ -69,7 +71,27 @@ function ProfileDropdown (props) {
   )
 }
 
+function NavLink (props) {
+  const router = useRouter()
+  const active = router.pathname === props.href
+
+  let anchorClasses =
+    props.className +
+    ' inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out'
+  if (active) {
+    anchorClasses =
+      props.className +
+      ' inline-flex items-center px-1 pt-1 border-b-2 border-pink-500 text-sm font-medium leading-5 text-gray-900 focus:outline-none focus:border-pink-700 transition duration-150 ease-in-out'
+  }
+  return (
+    <Link href={props.href} as={props.as}>
+      <a className={anchorClasses}>{props.children}</a>
+    </Link>
+  )
+}
+
 export default function nav (props) {
+  const router = useRouter()
   return (
     <nav className='bg-white shadow-sm'>
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
@@ -88,18 +110,20 @@ export default function nav (props) {
               />
             </div>
             <div className='hidden sm:ml-6 sm:flex'>
-              <a
-                href='#'
-                className='inline-flex items-center px-1 pt-1 border-b-2 border-pink-500 text-sm font-medium leading-5 text-gray-900 focus:outline-none focus:border-pink-700 transition duration-150 ease-in-out'
+              <NavLink
+                href={props.links.rateNextName.href}
+                as={props.links.rateNextName.as}
               >
                 Rate Names
-              </a>
-              <a
-                href='#'
-                className='ml-8 inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out'
+              </NavLink>
+
+              <NavLink
+                href={props.links.namesYouBothLike.href}
+                as={props.links.namesYouBothLike.as}
+                className='ml-8'
               >
                 Names You Both Like
-              </a>
+              </NavLink>
             </div>
           </div>
           <div className='hidden sm:ml-6 sm:flex sm:items-center'>

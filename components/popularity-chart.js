@@ -16,7 +16,7 @@ function formatter (x) {
 export default function PopularityChart (props) {
   return (
     <ResponsiveContainer width='100%' aspect={2.5}>
-      <LineChart id={props.name} data={props.years}>
+      <LineChart id={props.name} data={props.records}>
         <XAxis dataKey='year' interval={9} />
         <YAxis label={{ formatter }} />
         <Tooltip separator=': ' />

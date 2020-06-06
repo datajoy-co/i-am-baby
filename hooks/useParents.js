@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useRouter } from 'next/router'
+import { updateRoute } from '../library/helpers'
 
 function getOtherParentName (parentName) {
   if (parentName === 'kristin') {
@@ -9,11 +10,12 @@ function getOtherParentName (parentName) {
 }
 
 export default function useParents () {
-  const [currentParentName, setParentName] = useState('kristin')
+  const router = useRouter()
+  const currentParentName = router.query.username
   const otherParentName = getOtherParentName(currentParentName)
 
   function toggleParent () {
-    setParentName(otherParentName)
+    updateRoute(router, { username: otherParentName })
   }
 
   return [currentParentName, otherParentName, toggleParent]

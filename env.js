@@ -1,3 +1,5 @@
-console.log(
-  `Hi! This repo uses transcrypt to manage its environment variables. See one of the project members for credentials. More info here: https://github.com/elasticdog/transcrypt`
-)
+U2FsdGVkX1+6YUauaETJBj43GGEhmtm5p0huuwVljUxsav9DaQOq1zZaTxDpE2Mw
+8BCceI9lRgIyhHBhuVkTtcUg/iF4+LPd83e8tvAZPSbaUT8L7ne/9/bdpFIuPymu
+iV8fq2P8JX5hmDjUlbnUZyC3QHj1iYVsLqiM8x32RtAB3yPjCVgsbrgQt/hvszhf
+9QnIftUZ4D87OkVFoU4lIjVTheVguZgbYr1fYmMRi45rWdFu4rW9NHxlfRs4ZAD8
+QjTdxVloGrxpXSbUvxAUDl1x/u3JznSPEi6Q2COifFcKYcBRIYFIeOF4dgTf06Vf

@@ -10,11 +10,14 @@
   "dependencies": {
     "@scrabblescore/scrabblescore": "^1.1.0",
     "@tailwindcss/ui": "^0.3.0",
+    "knex": "^0.21.1",
     "ky": "^0.20.0",
     "ky-universal": "^0.7.0",
+    "mysql": "^2.18.1",
     "next": "9.4.4",
     "react": "16.13.1",
     "react-dom": "16.13.1",
+    "react-transition-group": "^4.4.1",
     "recharts": "^1.8.5",
     "simple-statistics": "^7.1.0"
   },
