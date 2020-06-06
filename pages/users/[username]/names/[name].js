@@ -100,25 +100,21 @@ export default function (props) {
   return (
     <Layout voting={props.voting} links={props.links}>
       <header>
-        <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
-          <ProgressBar title='Names Rated' progress={props.progress} />
-          <h1 className='text-3xl font-bold leading-tight text-gray-900'>
-            {capitalize(name)}
-          </h1>
-        </div>
+        <ProgressBar title='Names Rated' progress={props.progress} />
+        <h1 className='text-3xl font-bold leading-tight text-gray-900'>
+          {capitalize(name)}
+        </h1>
       </header>
       <main>
-        <div className='max-w-7xl mx-auto sm:px-6 lg:px-8'>
-          <Statistics {...props.statistics} />
-          <Chart {...props.statistics} />
-          <ActionButtons
-            voting={props.voting}
-            name={name}
-            username={props.username}
-            goToNextName={goToNextName}
-            notify={props.notify}
-          />
-        </div>
+        <Statistics {...props.statistics} />
+        <Chart {...props.statistics} />
+        <ActionButtons
+          voting={props.voting}
+          name={name}
+          username={props.username}
+          goToNextName={goToNextName}
+          notify={props.notify}
+        />
       </main>
     </Layout>
   )
