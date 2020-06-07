@@ -27,7 +27,7 @@ export async function getVotesForUser (userName) {
 }
 
 export async function countNamesToVoteOn () {
-  const nameCount = await knex('SSA').count('*')
+  const nameCount = await knex('nameOptions').count('*')
   return nameCount[0]['count(*)']
 }
 
@@ -41,19 +41,25 @@ export async function countVotes (userName) {
 export async function getNextName (userName, currentName = '') {
   const capitalizedCurrentName = capitalize(currentName)
   const query = `
-    select distinct SSA.name
-    from babbynamschema.SSA
-      where SSA.name not in (
+    select distinct nameOptions.name
+    from babbynamschema.nameOptions
+      where nameOptions.name not in (
         select distinct votes.name
           from babbynamschema.votes
           where userName = '${userName}'
       )
-      and SSA.name <> '${capitalizedCurrentName}'
+      and nameOptions.name <> '${capitalizedCurrentName}'
     limit 1;
   `
 
   const result = await knex.raw(query)
-  return result[0][0].name.toLowerCase()
+  const row = result[0][0]
+
+  if (row) {
+    return row.name.toLowerCase()
+  }
+
+  return null
 }
 
 export async function getAmabFraction (name) {
@@ -99,14 +105,10 @@ export async function getSsaRecords (name) {
   return records
 }
 
-export async function getAllNames () {
-  return knex('SSA').distinct('name')
-}
-
 export async function getProgress (userName) {
   const nameCount = await countNamesToVoteOn()
   const voteCount = await countVotes(userName)
-  return (voteCount * 1000) / nameCount
+  return voteCount / nameCount
 }
 
 export async function getNamesBothParentsLike (userName) {

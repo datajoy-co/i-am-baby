@@ -7,6 +7,13 @@ export default function getLinks (userName) {
       }
     },
     rateName (name) {
+      if (name == null) {
+        return {
+          href: '/users/[userName]/voting-complete',
+          as: `/users/${userName}/voting-complete`
+        }
+      }
+
       return {
         href: '/users/[userName]/names/[name]',
         as: `/users/${userName}/names/${name}`
