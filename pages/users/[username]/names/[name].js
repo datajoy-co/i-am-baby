@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 import PopularityChart from '../../../../components/popularity-chart'
 import StatsBlock from '../../../../components/stats-block'

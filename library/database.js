@@ -1,9 +1,7 @@
 import { capitalize } from '../library/helpers'
-import getKnex from '../configured-libraries/knex'
+import knex from '../configured-libraries/knex'
 
 export async function createVote (username, name, liked) {
-  const knex = await getKnex()
-
   const vote = {
     username: username,
     name: capitalize(name),
@@ -14,8 +12,6 @@ export async function createVote (username, name, liked) {
 }
 
 export async function deleteVotes (username, name) {
-  const knex = await getKnex()
-
   return knex('votes')
     .where('username', username)
     .andWhere('name', name)
@@ -23,8 +19,6 @@ export async function deleteVotes (username, name) {
 }
 
 export async function getVotesForUser (username) {
-  const knex = await getKnex()
-
   return knex('votes')
     .where({
       username
@@ -33,15 +27,11 @@ export async function getVotesForUser (username) {
 }
 
 export async function countNamesToVoteOn () {
-  const knex = await getKnex()
-
   const nameCount = await knex('SSA').count('*')
   return nameCount[0]['count(*)']
 }
 
 export async function countVotes (username) {
-  const knex = await getKnex()
-
   const voteCount = await knex('votes')
     .where('username', username)
     .count('*')
@@ -49,8 +39,6 @@ export async function countVotes (username) {
 }
 
 export async function getNextName (username, currentName = '') {
-  const knex = await getKnex()
-
   const capitalizedCurrentName = capitalize(currentName)
   const query = `
     select distinct SSA.name
@@ -69,8 +57,6 @@ export async function getNextName (username, currentName = '') {
 }
 
 export async function getAmabFraction (name) {
-  const knex = await getKnex()
-
   const capitalized = capitalize(name)
   const query = `
     select
@@ -83,8 +69,6 @@ export async function getAmabFraction (name) {
 }
 
 export async function getSsaRecords (name) {
-  const knex = await getKnex()
-
   const capitalized = capitalize(name)
   const query = `
     select 
@@ -116,8 +100,6 @@ export async function getSsaRecords (name) {
 }
 
 export async function getAllNames () {
-  const knex = await getKnex()
-
   return knex('SSA').distinct('name')
 }
 
@@ -128,8 +110,6 @@ export async function getProgress (username) {
 }
 
 export async function getNamesBothParentsLike (username) {
-  const knex = await getKnex()
-
   const query = `
     select
       distinct kristinVotes.name,

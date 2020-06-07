@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "install-transcrypt": "git clone https://github.com/elasticdog/transcrypt.git && cd transcrypt/ "
   },
   "dependencies": {
     "@scrabblescore/scrabblescore": "^1.1.0",
@@ -25,6 +26,7 @@
   "devDependencies": {
     "postcss-preset-env": "^6.7.0",
     "standard": "^14.3.4",
-    "tailwindcss": "^1.4.6"
+    "tailwindcss": "^1.4.6",
+    "vercel": "^19.0.1"
   }
 }
