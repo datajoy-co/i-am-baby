@@ -5,7 +5,7 @@ async function createVote (request, response) {
   const username = request.query.username
   const name = request.body.name
   const liked = request.body.liked
-  console.log({ username, name })
+  console.log(request.query)
 
   await database.deleteVotes(username, name)
   await database.createVote(username, name, liked)
