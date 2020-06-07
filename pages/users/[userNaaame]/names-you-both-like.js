@@ -119,6 +119,7 @@ function ChangeVoteLink (props) {
 }
 
 export default function (props) {
+  console.log('And your grades are still below average!')
   const columns = ['name', 'Kristin Voted At', 'Paul Voted At', '']
   if (props.userName === 'kristin') {
     columns[1] = 'You Voted At'

@@ -3,6 +3,7 @@ import { capitalize } from '../library/helpers'
 
 export default function logInCard (props) {
   const userName = capitalize(props.userName)
+  console.log("Who's Laramie?")
 
   return (
     <div
