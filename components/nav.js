@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { capitalize } from '../library/helpers'
+import useLinks from '../hooks/use-links'
 
 function ProfileImage (props) {
   const kristinSrc = '/kristin.jpeg'
@@ -73,7 +74,12 @@ function ProfileDropdown (props) {
 
 function NavLink (props) {
   const router = useRouter()
-  const active = router.pathname === props.href
+
+  let active = props.active
+  if (props.active == null) {
+    active = router.asPath === props.as
+  }
+
   const className = props.className || ''
 
   let anchorClasses =
@@ -84,6 +90,7 @@ function NavLink (props) {
       className +
       ' inline-flex items-center px-1 pt-1 border-b-2 border-pink-500 text-sm font-medium leading-5 text-gray-900 focus:outline-none focus:border-pink-700 transition duration-150 ease-in-out'
   }
+
   return (
     <Link href={props.href} as={props.as}>
       <a className={anchorClasses}>{props.children}</a>
@@ -93,6 +100,11 @@ function NavLink (props) {
 
 export default function nav (props) {
   const router = useRouter()
+  const links = useLinks()
+  const rateNameLink = links.currentParent.rateName('')
+  const rateNextNameLink = links.currentParent.rateNextName()
+  const namesYouBothLike = links.currentParent.namesYouBothLike()
+
   return (
     <nav className='bg-white shadow-sm'>
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
@@ -112,15 +124,16 @@ export default function nav (props) {
             </div>
             <div className='hidden sm:ml-6 sm:flex'>
               <NavLink
-                href={props.links.rateNextName.href}
-                as={props.links.rateNextName.as}
+                href={rateNextNameLink.href}
+                as={rateNextNameLink.as}
+                active={router.pathname === rateNameLink.href}
               >
                 Rate Names
               </NavLink>
 
               <NavLink
-                href={props.links.namesYouBothLike.href}
-                as={props.links.namesYouBothLike.as}
+                href={namesYouBothLike.href}
+                as={namesYouBothLike.as}
                 className='ml-8'
               >
                 Names You Both Like

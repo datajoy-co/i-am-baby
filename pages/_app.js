@@ -1,6 +1,7 @@
 import '../styles/index.css'
-import useNotifications from '../hooks/useNotifications'
-import useVoting from '../hooks/useVoting'
+import Layout from '../components/layout'
+import useNotifications from '../hooks/use-notifications'
+import useVoting from '../hooks/use-voting'
 
 export default function App ({ Component, pageProps }) {
   const [NotificationContainer, notify] = useNotifications()
@@ -8,7 +9,9 @@ export default function App ({ Component, pageProps }) {
 
   return (
     <div className='min-h-screen bg-gray-100'>
-      <Component {...pageProps} voting={voting} notify={notify} />
+      <Layout voting={voting}>
+        <Component {...pageProps} voting={voting} notify={notify} />
+      </Layout>
       <NotificationContainer />
     </div>
   )

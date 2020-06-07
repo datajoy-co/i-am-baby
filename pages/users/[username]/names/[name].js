@@ -1,25 +1,24 @@
 import React, { useEffect } from 'react'
 import { useRouter } from 'next/router'
-import Layout from '../../../../components/layout'
 import PopularityChart from '../../../../components/popularity-chart'
 import StatsBlock from '../../../../components/stats-block'
 import ProgressBar from '../../../../components/progress-bar'
 import ActionButton from '../../../../components/action-button'
 import * as database from '../../../../library/database'
 import * as statistics from '../../../../library/statistics'
-import getLinks from '../../../../library/get-links'
 import { updateRoute, capitalize, percent } from '../../../../library/helpers'
+import useLinks from '../../../../hooks/use-links'
 
 export async function getServerSideProps (context) {
   const { username, name } = context.params
   const progress = await database.getProgress(username)
+  const nextName = await database.getNextName(username, name)
   const statsForName = await statistics.forName(name)
-  const links = await getLinks(username, name)
 
   return {
     props: {
-      links,
       statistics: statsForName,
+      nextName,
       progress,
       username
     }
@@ -88,17 +87,21 @@ function ActionButtons (props) {
 export default function (props) {
   const router = useRouter()
   const { name } = router.query
+
+  const links = useLinks()
+  const nextNameLink = links.currentParent.rateName(props.nextName)
+
   useEffect(() => {
     // Prefetch the page for the next name.
-    router.prefetch(props.links.rateNextName.href, props.links.rateNextName.as)
+    router.prefetch(nextNameLink.href, nextNameLink.as)
   }, [])
 
   function goToNextName () {
-    router.push(props.links.rateNextName.href, props.links.rateNextName.as)
+    router.push(nextNameLink.href, nextNameLink.as)
   }
 
   return (
-    <Layout voting={props.voting} links={props.links}>
+    <>
       <header>
         <ProgressBar title='Names Rated' progress={props.progress} />
         <h1 className='text-3xl font-bold leading-tight text-gray-900'>
@@ -116,6 +119,6 @@ export default function (props) {
           notify={props.notify}
         />
       </main>
-    </Layout>
+    </>
   )
 }

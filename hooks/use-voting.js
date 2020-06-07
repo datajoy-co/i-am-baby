@@ -1,4 +1,4 @@
-import useParents from './useParents'
+import useParents from './use-parents'
 import ky from 'ky-universal'
 
 export default function useVoting () {

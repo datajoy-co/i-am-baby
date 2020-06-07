@@ -11,6 +11,13 @@ export async function createVote (username, name, liked) {
   return knex('votes').insert(vote)
 }
 
+export async function deleteVotes (username, name) {
+  return knex('votes')
+    .where('username', username)
+    .andWhere('name', name)
+    .delete()
+}
+
 export async function getVotesForUser (username) {
   return knex('votes')
     .where({
@@ -102,15 +109,31 @@ export async function getProgress (username) {
   return (voteCount * 1000) / nameCount
 }
 
-export async function getNamesBothParentsLike () {
+export async function getNamesBothParentsLike (username) {
   const query = `
-    select distinct A.name
-    from babbynamschema.votes A, babbynamschema.votes B
-    where A.username <> B.username
-      and A.name = B.name;
+    select
+      distinct kristinVotes.name,
+      kristinVotes.createdAt as kristinVotedAt,
+      paulVotes.createdAt as paulVotedAt
+    from
+      babbynamschema.votes kristinVotes,
+        babbynamschema.votes paulVotes
+    where
+      kristinVotes.username = 'kristin'
+        and paulVotes.username = 'paul'
+        and kristinVotes.name = paulVotes.name
+    order by ${username}Votes.createdAt desc;
   `
+
   const result = await knex.raw(query)
   const records = result[0]
-  const names = records.map(record => record.name)
-  return names
+  const mutualVotes = records.map(record => {
+    return {
+      name: record.name.toLowerCase(),
+      kristinVotedAt: record.kristinVotedAt.toISOString(),
+      paulVotedAt: record.paulVotedAt.toISOString()
+    }
+  })
+
+  return mutualVotes
 }

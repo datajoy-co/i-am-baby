@@ -6,6 +6,7 @@ async function createVote (request, response) {
   const name = request.body.name
   const liked = request.body.liked
 
+  await database.deleteVotes(username, name)
   await database.createVote(username, name, liked)
 
   response.statusCode = 201
