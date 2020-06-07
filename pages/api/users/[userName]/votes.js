@@ -2,21 +2,21 @@ import * as database from '../../../../library/database'
 import { capitalize } from '../../../../library/helpers'
 
 async function createVote (request, response) {
-  const username = request.query.username
+  const userName = request.query.userName
   const name = request.body.name
   const liked = request.body.liked
   console.log(request.query)
 
-  await database.deleteVotes(username, name)
-  await database.createVote(username, name, liked)
+  await database.deleteVotes(userName, name)
+  await database.createVote(userName, name, liked)
 
   response.statusCode = 201
   response.end()
 }
 
 async function getVotesForUser (request, response) {
-  const username = request.query.username
-  const votesForUser = await database.getVotesForUser(username)
+  const userName = request.query.userName
+  const votesForUser = await database.getVotesForUser(userName)
   response.statusCode = 200
   response.json(votesForUser)
 }

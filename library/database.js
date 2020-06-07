@@ -1,9 +1,9 @@
 import { capitalize } from '../library/helpers'
 import knex from '../configured-libraries/knex'
 
-export async function createVote (username, name, liked) {
+export async function createVote (userName, name, liked) {
   const vote = {
-    username: username,
+    userName: userName,
     name: capitalize(name),
     liked: liked
   }
@@ -11,17 +11,17 @@ export async function createVote (username, name, liked) {
   return knex('votes').insert(vote)
 }
 
-export async function deleteVotes (username, name) {
+export async function deleteVotes (userName, name) {
   return knex('votes')
-    .where('username', username)
+    .where('userName', userName)
     .andWhere('name', name)
     .delete()
 }
 
-export async function getVotesForUser (username) {
+export async function getVotesForUser (userName) {
   return knex('votes')
     .where({
-      username
+      userName
     })
     .select('*')
 }
@@ -31,14 +31,14 @@ export async function countNamesToVoteOn () {
   return nameCount[0]['count(*)']
 }
 
-export async function countVotes (username) {
+export async function countVotes (userName) {
   const voteCount = await knex('votes')
-    .where('username', username)
+    .where('userName', userName)
     .count('*')
   return voteCount[0]['count(*)']
 }
 
-export async function getNextName (username, currentName = '') {
+export async function getNextName (userName, currentName = '') {
   const capitalizedCurrentName = capitalize(currentName)
   const query = `
     select distinct SSA.name
@@ -46,7 +46,7 @@ export async function getNextName (username, currentName = '') {
       where SSA.name not in (
         select distinct votes.name
           from babbynamschema.votes
-          where username = '${username}'
+          where userName = '${userName}'
       )
       and SSA.name <> '${capitalizedCurrentName}'
     limit 1;
@@ -103,13 +103,13 @@ export async function getAllNames () {
   return knex('SSA').distinct('name')
 }
 
-export async function getProgress (username) {
+export async function getProgress (userName) {
   const nameCount = await countNamesToVoteOn()
-  const voteCount = await countVotes(username)
+  const voteCount = await countVotes(userName)
   return (voteCount * 1000) / nameCount
 }
 
-export async function getNamesBothParentsLike (username) {
+export async function getNamesBothParentsLike (userName) {
   const query = `
     select
       distinct kristinVotes.name,
@@ -119,10 +119,10 @@ export async function getNamesBothParentsLike (username) {
       babbynamschema.votes kristinVotes,
         babbynamschema.votes paulVotes
     where
-      kristinVotes.username = 'kristin'
-        and paulVotes.username = 'paul'
+      kristinVotes.userName = 'kristin'
+        and paulVotes.userName = 'paul'
         and kristinVotes.name = paulVotes.name
-    order by ${username}Votes.createdAt desc;
+    order by ${userName}Votes.createdAt desc;
   `
 
   const result = await knex.raw(query)

@@ -3,10 +3,10 @@ import { useRouter } from 'next/router'
 import * as database from '../../../library/database'
 
 export async function getServerSideProps ({ res, params }) {
-  const { username } = params
-  const nextName = await database.getNextName(username)
+  const { userName } = params
+  const nextName = await database.getNextName(userName)
 
-  const links = getLinks(username)
+  const links = getLinks(userName)
   const nextNameLink = links.rateName(nextName)
 
   // Server-side redirects aren't working for some reason.

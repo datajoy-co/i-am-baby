@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { capitalize } from '../library/helpers'
 
 export default function logInCard (props) {
-  const username = capitalize(props.username)
+  const userName = capitalize(props.userName)
 
   return (
     <div
@@ -32,11 +32,11 @@ export default function logInCard (props) {
             className='text-lg leading-6 font-medium text-gray-900'
             id='modal-headline'
           >
-            {username}
+            {userName}
           </h3>
           <div className='mt-2'>
             <p className='text-sm leading-5 text-gray-500'>
-              Log in as {username}.
+              Log in as {userName}.
             </p>
           </div>
         </div>

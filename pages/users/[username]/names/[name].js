@@ -11,9 +11,9 @@ import { updateRoute, capitalize, percent } from '../../../../library/helpers'
 import useLinks from '../../../../hooks/use-links'
 
 export async function getServerSideProps (context) {
-  const { username, name } = context.params
-  const progress = await database.getProgress(username)
-  const nextName = await database.getNextName(username, name)
+  const { userName, name } = context.params
+  const progress = await database.getProgress(userName)
+  const nextName = await database.getNextName(userName, name)
   const statsForName = await statistics.forName(name)
 
   return {
@@ -21,7 +21,7 @@ export async function getServerSideProps (context) {
       statistics: statsForName,
       nextName,
       progress,
-      username
+      userName
     }
   }
 }
@@ -115,7 +115,7 @@ export default function (props) {
         <ActionButtons
           voting={props.voting}
           name={name}
-          username={props.username}
+          userName={props.userName}
           goToNextName={goToNextName}
           notify={props.notify}
         />
