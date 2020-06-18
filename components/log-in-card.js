@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { capitalize } from '../library/helpers'
+import { capitalize } from '../library/helpers.js'
 
 export default function logInCard (props) {
   const userName = capitalize(props.userName)

@@ -1,4 +1,4 @@
-import Nav from '../components/nav'
+import Nav from '../components/nav.js'
 
 export default function Layout (props) {
   return (

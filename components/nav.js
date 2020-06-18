@@ -1,10 +1,10 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { capitalize } from '../library/helpers'
-import useLinks from '../hooks/use-links'
-import useParents from '../hooks/use-parents'
-import ProfileImage from '../components/profile-image'
+import { capitalize } from '../library/helpers.js'
+import useLinks from '../hooks/use-links.js'
+import useParents from '../hooks/use-parents.js'
+import ProfileImage from '../components/profile-image.js'
 
 function SwitchParent (props) {
   const handleClick = props.toggleParent

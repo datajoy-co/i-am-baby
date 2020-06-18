@@ -1,5 +1,5 @@
-import useParents from './use-parents'
 import ky from 'ky-universal'
+import useParents from './use-parents.js'
 
 export default function useVoting () {
   const [currentParentName, otherParentName, toggleParent] = useParents()

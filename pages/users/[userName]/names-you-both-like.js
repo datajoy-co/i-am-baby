@@ -1,10 +1,10 @@
 import React from 'react'
 import Link from 'next/link'
-import Layout from '../../../components/layout'
-import * as database from '../../../library/database'
-import useLinks from '../../../hooks/use-links'
-import { capitalize } from '../../../library/helpers'
-import TimeAgo from '../../../configured-libraries/react-time-ago'
+import Layout from '../../../components/layout.js'
+import * as database from '../../../library/database.js'
+import useLinks from '../../../hooks/use-links.js'
+import { capitalize } from '../../../library/helpers.js'
+import TimeAgo from '../../../configured-libraries/react-time-ago.js'
 
 const dateFormatter = new Intl.DateTimeFormat('en', {
   month: 'long',

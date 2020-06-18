@@ -1,6 +1,6 @@
 import * as simpleStatistics from 'simple-statistics'
 import * as scrabble from '@scrabblescore/scrabblescore'
-import * as database from './database'
+import * as database from './database.js'
 
 const getRecordWithHighestTotal = records => {
   let highestTotal = records[0].total
@@ -16,14 +16,21 @@ const getRecordWithHighestTotal = records => {
   return recordWithHighestTotal
 }
 
+export function getUpwardTrend (recentRecords) {
+  const points = recentRecords.map(record => [record.year, record.afabCount])
+  const regressionLine = simpleStatistics.linearRegression(points)
+  return regressionLine.m
+}
+
 function isTrendingUpwards (records) {
+  // const recentRecords = records
   const recentRecords = records.filter(record => record.year > 2010)
-  const points = recentRecords.map(record => [record.year, record.total])
+  const points = recentRecords.map(record => [record.year, record.afabCount])
   const regressionLine = simpleStatistics.linearRegression(points)
   return regressionLine.m > 0
 }
 
-function getClassmateChance (records) {
+export function getClassmateChance (records) {
   const recentRecords = records.filter(record => record.year > 2010)
   const points = recentRecords.map(record => [
     record.year,

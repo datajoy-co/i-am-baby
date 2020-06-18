@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { updateRoute } from '../library/helpers'
+import { updateRoute } from '../library/helpers.js'
 
 function getOtherParentName (parentName) {
   if (parentName === 'kristin') {

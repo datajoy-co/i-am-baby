@@ -1,5 +1,5 @@
-import * as database from '../../../../library/database'
-import { capitalize } from '../../../../library/helpers'
+import * as database from '../../../../library/database.js'
+import { capitalize } from '../../../../library/helpers.js'
 
 async function createVote (request, response) {
   const userName = request.query.userName

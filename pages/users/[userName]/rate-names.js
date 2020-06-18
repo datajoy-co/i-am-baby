@@ -1,6 +1,6 @@
-import getLinks from '../../../library/get-links'
 import { useRouter } from 'next/router'
-import * as database from '../../../library/database'
+import getLinks from '../../../library/get-links.js'
+import * as database from '../../../library/database.js'
 
 export async function getServerSideProps ({ res, params }) {
   const { userName } = params
