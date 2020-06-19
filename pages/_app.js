@@ -1,8 +1,8 @@
 import '../styles/index.css'
 import Head from 'next/head'
-import Layout from '../components/layout.js'
-import useNotifications from '../hooks/use-notifications.js'
-import useVoting from '../hooks/use-voting.js'
+import Layout from '../components/layout'
+import useNotifications from '../hooks/use-notifications'
+import useVoting from '../hooks/use-voting'
 
 export default function App ({ Component, pageProps }) {
   const [NotificationContainer, notify] = useNotifications()

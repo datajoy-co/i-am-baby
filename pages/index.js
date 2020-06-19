@@ -1,5 +1,5 @@
-import LogInCard from '../components/log-in-card.js'
-import getLinks from '../library/get-links.js'
+import LogInCard from '../components/log-in-card'
+import getLinks from '../library/get-links'
 
 export default function Home () {
   const kristinLinks = getLinks('kristin')

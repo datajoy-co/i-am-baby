@@ -24,6 +24,12 @@ export default function getLinks (userName) {
         href: '/users/[userName]/rate-names',
         as: `/users/${userName}/rate-names`
       }
+    },
+    yourVotes () {
+      return {
+        href: '/users/[userName]/your-votes',
+        as: `/users/${userName}/your-votes`
+      }
     }
   }
 }

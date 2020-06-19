@@ -5,9 +5,20 @@ import TimeAgo from '../../../configured-libraries/react-time-ago'
 import NameTable from '../../../components/name-table'
 import ChangeVoteLink from '../../../components/change-vote-link'
 
+function VoteEmoji ({ liked }) {
+  let emoji
+  if (liked) {
+    emoji = '✅'
+  } else {
+    emoji = '🙊'
+  }
+
+  return <span className='text-xl'>{emoji}</span>
+}
+
 export async function getServerSideProps (context) {
   const { userName } = context.params
-  const mutualVotes = await database.getNamesBothParentsLike(userName)
+  const mutualVotes = await database.getVotes(userName)
 
   return {
     props: {
@@ -18,25 +29,18 @@ export async function getServerSideProps (context) {
 }
 
 function getNameTableRow (vote) {
-  const kristinVotedAt = parseDateString(vote.kristinVotedAt)
-  const paulVotedAt = parseDateString(vote.paulVotedAt)
+  const createdAt = parseDateString(vote.createdAt)
 
   return [
     capitalize(vote.name),
-    <TimeAgo date={kristinVotedAt} />,
-    <TimeAgo date={paulVotedAt} />,
+    <VoteEmoji liked={vote.liked} />,
+    <TimeAgo date={createdAt} />,
     <ChangeVoteLink name={vote.name} />
   ]
 }
 
 export default function (props) {
-  const columns = ['name', 'Kristin Voted At', 'Paul Voted At', '']
-  if (props.userName === 'kristin') {
-    columns[1] = 'You Voted At'
-  } else {
-    columns[2] = 'You Voted At'
-  }
-
+  const columns = ['name', 'Your Vote', 'You Voted At', '']
   const rows = props.mutualVotes.map(getNameTableRow)
 
   return (

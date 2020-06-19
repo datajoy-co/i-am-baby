@@ -1,5 +1,5 @@
-import names from './data/names.js'
-import flowerText from './data/flower-text.js'
+import names from './data/names'
+import flowerText from './data/flower-text'
 
 const flowerWords = flowerText
   .split(/\W/g)

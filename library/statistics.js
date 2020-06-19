@@ -1,6 +1,6 @@
 import * as simpleStatistics from 'simple-statistics'
 import * as scrabble from '@scrabblescore/scrabblescore'
-import * as database from './database.js'
+import * as database from './database'
 
 const getRecordWithHighestTotal = records => {
   let highestTotal = records[0].total

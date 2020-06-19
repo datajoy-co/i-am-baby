@@ -1,5 +1,5 @@
-import names from './data/names.js'
-import musicTerms from './data/music-terms.js'
+import names from './data/names'
+import musicTerms from './data/music-terms'
 let lowerCaseMusicTerms = musicTerms.map(term => term.toLowerCase())
 
 function processName (name) {

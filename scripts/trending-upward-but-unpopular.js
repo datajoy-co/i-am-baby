@@ -1,6 +1,6 @@
-import 'dotenv/config.js'
-import * as database from '../library/database.js'
-import * as stats from '../library/statistics.js'
+import 'dotenv/config'
+import * as database from '../library/database'
+import * as stats from '../library/statistics'
 
 async function processName (name) {
   const records = await database.getRecentSsaRecords(name)

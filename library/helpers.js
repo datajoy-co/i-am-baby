@@ -24,3 +24,12 @@ export function percent (normalized, { decimalPlaces = 2 } = {}) {
   number = number.toFixed(decimalPlaces)
   return number + '%'
 }
+
+export function parseDateString (dateString) {
+  const int = Date.parse(dateString)
+  const date = new Date()
+  date.setTime(int)
+  // Convert to eastern time.
+  date.setHours(date.getHours() - 4)
+  return date
+}

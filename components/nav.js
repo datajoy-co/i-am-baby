@@ -1,10 +1,10 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { capitalize } from '../library/helpers.js'
-import useLinks from '../hooks/use-links.js'
-import useParents from '../hooks/use-parents.js'
-import ProfileImage from '../components/profile-image.js'
+import { capitalize } from '../library/helpers'
+import useLinks from '../hooks/use-links'
+import useParents from '../hooks/use-parents'
+import ProfileImage from '../components/profile-image'
 
 function SwitchParent (props) {
   const handleClick = props.toggleParent
@@ -103,6 +103,7 @@ export default function nav (props) {
   const rateNameLink = links.currentParent.rateName('')
   const rateNextNameLink = links.currentParent.rateNextName()
   const namesYouBothLike = links.currentParent.namesYouBothLike()
+  const yourVotes = links.currentParent.yourVotes()
 
   return (
     <nav className='bg-white shadow-sm'>
@@ -140,6 +141,9 @@ export default function nav (props) {
                 className='ml-8'
               >
                 Names You Both Like
+              </NavLink>
+              <NavLink href={yourVotes.href} as={yourVotes.as} className='ml-8'>
+                Your Votes
               </NavLink>
             </div>
           </div>

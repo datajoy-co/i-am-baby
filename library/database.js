@@ -1,5 +1,5 @@
-import { capitalize } from '../library/helpers.js'
-import knex from '../configured-libraries/knex.js'
+import { capitalize } from '../library/helpers'
+import knex from '../configured-libraries/knex'
 
 export async function createVote (userName, name, liked) {
   const vote = {
@@ -146,7 +146,7 @@ export async function getProgress (userName) {
 export async function getNamesBothParentsLike (userName) {
   const query = `
     select
-      distinct kristinVotes.name,
+      kristinVotes.name,
       kristinVotes.createdAt as kristinVotedAt,
       paulVotes.createdAt as paulVotedAt
     from
@@ -156,6 +156,8 @@ export async function getNamesBothParentsLike (userName) {
       kristinVotes.userName = 'kristin'
         and paulVotes.userName = 'paul'
         and kristinVotes.name = paulVotes.name
+        and kristinVotes.liked = 1
+        and paulVotes.liked = 1
     order by ${userName}Votes.createdAt desc;
   `
 
@@ -170,6 +172,27 @@ export async function getNamesBothParentsLike (userName) {
   })
 
   return mutualVotes
+}
+
+export async function getVotes (userName) {
+  const query = `
+    select *
+    from babbynamschema.votes
+    where votes.userName = '${userName}'
+    order by votes.createdAt desc;
+  `
+
+  const result = await knex.raw(query)
+  const records = result[0]
+  const votes = records.map(record => {
+    return {
+      ...record,
+      createdAt: record.createdAt.toISOString(),
+      name: record.name.toLowerCase()
+    }
+  })
+
+  return votes
 }
 
 export function getNameStream () {
