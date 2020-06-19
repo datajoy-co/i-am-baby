@@ -1,21 +1,28 @@
-export default function getLinks (username) {
+export default function getLinks (userName) {
   return {
     namesYouBothLike () {
       return {
-        href: '/users/[username]/names-you-both-like',
-        as: `/users/${username}/names-you-both-like`
+        href: '/users/[userName]/names-you-both-like',
+        as: `/users/${userName}/names-you-both-like`
       }
     },
     rateName (name) {
+      if (name == null) {
+        return {
+          href: '/users/[userName]/voting-complete',
+          as: `/users/${userName}/voting-complete`
+        }
+      }
+
       return {
-        href: '/users/[username]/names/[name]',
-        as: `/users/${username}/names/${name}`
+        href: '/users/[userName]/names/[name]',
+        as: `/users/${userName}/names/${name}`
       }
     },
     rateNextName () {
       return {
-        href: '/users/[username]/rate-names',
-        as: `/users/${username}/rate-names`
+        href: '/users/[userName]/rate-names',
+        as: `/users/${userName}/rate-names`
       }
     }
   }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Notification from '../components/notification'
+import Notification from '../components/notification.js'
 
 let id = 0
 

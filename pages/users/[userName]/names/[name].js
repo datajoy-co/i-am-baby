@@ -1,18 +1,23 @@
 import React, { useEffect } from 'react'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
-import PopularityChart from '../../../../components/popularity-chart'
-import StatsBlock from '../../../../components/stats-block'
-import ProgressBar from '../../../../components/progress-bar'
-import ActionButton from '../../../../components/action-button'
-import * as database from '../../../../library/database'
-import * as statistics from '../../../../library/statistics'
-import { updateRoute, capitalize, percent } from '../../../../library/helpers'
+import PopularityChart from '../../../../components/popularity-chart.js'
+import StatsBlock from '../../../../components/stats-block.js'
+import ProgressBar from '../../../../components/progress-bar.js'
+import ActionButton from '../../../../components/action-button.js'
+import * as database from '../../../../library/database.js'
+import * as statistics from '../../../../library/statistics.js'
+import {
+  updateRoute,
+  capitalize,
+  percent
+} from '../../../../library/helpers.js'
 import useLinks from '../../../../hooks/use-links'
 
 export async function getServerSideProps (context) {
-  const { username, name } = context.params
-  const progress = await database.getProgress(username)
-  const nextName = await database.getNextName(username, name)
+  const { userName, name } = context.params
+  const progress = await database.getProgress(userName)
+  const nextName = await database.getNextName(userName, name)
   const statsForName = await statistics.forName(name)
 
   return {
@@ -20,7 +25,7 @@ export async function getServerSideProps (context) {
       statistics: statsForName,
       nextName,
       progress,
-      username
+      userName
     }
   }
 }
@@ -114,7 +119,7 @@ export default function (props) {
         <ActionButtons
           voting={props.voting}
           name={name}
-          username={props.username}
+          userName={props.userName}
           goToNextName={goToNextName}
           notify={props.notify}
         />

@@ -1,15 +1,10 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { capitalize } from '../library/helpers'
-import useLinks from '../hooks/use-links'
-
-function ProfileImage (props) {
-  const kristinSrc = '/kristin.jpeg'
-  const paulSrc = '/paul.jpeg'
-  const src = props.parentName === 'kristin' ? kristinSrc : paulSrc
-  return <img className='h-8 w-8 rounded-full' src={src} alt='' />
-}
+import { capitalize } from '../library/helpers.js'
+import useLinks from '../hooks/use-links.js'
+import useParents from '../hooks/use-parents.js'
+import ProfileImage from '../components/profile-image.js'
 
 function SwitchParent (props) {
   const handleClick = props.toggleParent
@@ -38,8 +33,12 @@ function useToggle (initialState) {
 }
 
 function ProfileDropdown (props) {
-  const voting = props.voting
+  const [currentParentName, otherParentName, toggleParent] = useParents()
   const [showSwitcher, toggleSwitcher] = useToggle(false)
+
+  if (!currentParentName) {
+    return null
+  }
 
   return (
     <div className='ml-3 relative'>
@@ -52,7 +51,7 @@ function ProfileDropdown (props) {
           onClick={toggleSwitcher}
           onBlur={toggleSwitcher}
         >
-          <ProfileImage parentName={voting.currentParentName} />
+          <ProfileImage parentName={currentParentName} />
         </button>
       </div>
       {/* <!-- */}
@@ -64,8 +63,8 @@ function ProfileDropdown (props) {
       {/* --> */}
       {showSwitcher && (
         <SwitchParent
-          otherParentName={voting.otherParentName}
-          toggleParent={voting.toggleParent}
+          otherParentName={otherParentName}
+          toggleParent={toggleParent}
         />
       )}
     </div>
@@ -110,17 +109,21 @@ export default function nav (props) {
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
         <div className='flex justify-between h-16'>
           <div className='flex'>
-            <div className='flex-shrink-0 flex items-center'>
-              <img
-                className='block lg:hidden h-8 w-auto'
-                src='/logo-transparent.png'
-                alt='Workflow logo'
-              />
-              <img
-                className='hidden lg:block h-8 w-auto'
-                src='/logo-transparent.png'
-                alt='Workflow logo'
-              />
+            <div className='flex-shrink-0 flex items-center cursor-pointer'>
+              <Link href='/'>
+                <img
+                  className='block lg:hidden h-8 w-auto'
+                  src='/logo-transparent.png'
+                  alt='Workflow logo'
+                />
+              </Link>
+              <Link href='/'>
+                <img
+                  className='hidden lg:block h-8 w-auto'
+                  src='/logo-transparent.png'
+                  alt='Workflow logo'
+                />
+              </Link>
             </div>
             <div className='hidden sm:ml-6 sm:flex'>
               <NavLink
@@ -141,7 +144,7 @@ export default function nav (props) {
             </div>
           </div>
           <div className='hidden sm:ml-6 sm:flex sm:items-center'>
-            <ProfileDropdown voting={props.voting} />
+            <ProfileDropdown />
           </div>
           <div className='-mr-2 flex items-center sm:hidden'>
             {/* Mobile menu button --> */}

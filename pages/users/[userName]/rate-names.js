@@ -1,20 +1,20 @@
-import getLinks from '../../../library/get-links'
 import { useRouter } from 'next/router'
-import * as database from '../../../library/database'
+import getLinks from '../../../library/get-links.js'
+import * as database from '../../../library/database.js'
 
 export async function getServerSideProps ({ res, params }) {
-  const { username } = params
-  const nextName = await database.getNextName(username)
+  const { userName } = params
+  const nextName = await database.getNextName(userName)
 
-  const links = getLinks(username)
-  const nextNameLink = links.rateName(nextName)
+  const links = getLinks(userName)
+  const redirectLink = links.rateName(nextName)
 
   // Server-side redirects aren't working for some reason.
   // We'll work on this more in the future.
   //
   // if (res) {
   //   res.writeHead(301, {
-  //     Location: nextNameLink.as
+  //     Location: redirectLink.as
   //   })
 
   //   res.end()
@@ -22,7 +22,7 @@ export async function getServerSideProps ({ res, params }) {
 
   return {
     props: {
-      nextNameLink
+      redirectLink
     }
   }
 }
@@ -31,7 +31,7 @@ export default function rateNames (props) {
   const isClient = typeof window !== 'undefined'
   const router = useRouter()
   if (isClient) {
-    router.replace(props.nextNameLink.href, props.nextNameLink.as)
+    router.replace(props.redirectLink.href, props.redirectLink.as)
   }
 
   return null

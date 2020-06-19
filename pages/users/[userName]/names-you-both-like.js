@@ -1,10 +1,10 @@
 import React from 'react'
 import Link from 'next/link'
-import Layout from '../../../components/layout'
-import * as database from '../../../library/database'
-import useLinks from '../../../hooks/use-links'
-import { capitalize } from '../../../library/helpers'
-import TimeAgo from '../../../configured-libraries/react-time-ago'
+import Layout from '../../../components/layout.js'
+import * as database from '../../../library/database.js'
+import useLinks from '../../../hooks/use-links.js'
+import { capitalize } from '../../../library/helpers.js'
+import TimeAgo from '../../../configured-libraries/react-time-ago.js'
 
 const dateFormatter = new Intl.DateTimeFormat('en', {
   month: 'long',
@@ -28,12 +28,12 @@ function formatDateString (dateTimeString) {
 }
 
 export async function getServerSideProps (context) {
-  const { username } = context.params
-  const mutualVotes = await database.getNamesBothParentsLike(username)
+  const { userName } = context.params
+  const mutualVotes = await database.getNamesBothParentsLike(userName)
 
   return {
     props: {
-      username,
+      userName,
       mutualVotes
     }
   }
@@ -120,7 +120,7 @@ function ChangeVoteLink (props) {
 
 export default function (props) {
   const columns = ['name', 'Kristin Voted At', 'Paul Voted At', '']
-  if (props.username === 'kristin') {
+  if (props.userName === 'kristin') {
     columns[1] = 'You Voted At'
   } else {
     columns[2] = 'You Voted At'
