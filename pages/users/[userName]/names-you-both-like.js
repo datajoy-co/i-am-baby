@@ -12,7 +12,7 @@ export default function (props) {
   )
 
   useEffect(() => {
-    setUserLinks(getLinks(userName).namesYouBothLike(partnerName))
+    setUserLinks(getLinks(userName).namesYouBothLike(partnerName.toLowerCase()))
   }, [partnerName])
 
   return (

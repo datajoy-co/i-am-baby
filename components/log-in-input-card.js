@@ -41,7 +41,7 @@ export default function logInInputCard(props) {
           >
             What's your name?
           </label>
-          <div class="mt-1 relative rounded-md shadow-sm">
+          <div className="mt-1 relative rounded-md shadow-sm">
             <input
               onChange={(e) => {
                 setUserName(e.target.value)
