@@ -1,21 +1,7 @@
 import React, { useState, useEffect } from "react"
 import Link from "next/link"
-import links from "../../../hooks/use-links"
 import getLinks from "../../../library/get-links"
 import { capitalize } from "../../../library/helpers"
-
-// export async function getServerSideProps(context) {
-//   console.log("getting server side props")
-//   const { userName } = context.params
-
-//   const mutualVotes = await database.getNamesBothParentsLike(userName, "paul")
-
-//   return {
-//     props: {
-//       userName,
-//     },
-//   }
-// }
 
 export default function (props) {
   const userName = props.voting.currentParentName
