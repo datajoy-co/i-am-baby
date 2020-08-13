@@ -1,47 +1,73 @@
-import React from 'react'
-import * as database from '../../../library/database'
-import { capitalize, parseDateString } from '../../../library/helpers'
-import TimeAgo from '../../../configured-libraries/react-time-ago'
-import NameTable from '../../../components/name-table'
-import ChangeVoteLink from '../../../components/change-vote-link'
+import React, { useState, useEffect } from "react"
+import Link from "next/link"
+import links from "../../../hooks/use-links"
+import getLinks from "../../../library/get-links"
+import { capitalize } from "../../../library/helpers"
 
-export async function getServerSideProps (context) {
-  const { userName } = context.params
-  const mutualVotes = await database.getNamesBothParentsLike(userName)
+// export async function getServerSideProps(context) {
+//   console.log("getting server side props")
+//   const { userName } = context.params
 
-  return {
-    props: {
-      userName,
-      mutualVotes
-    }
-  }
-}
+//   const mutualVotes = await database.getNamesBothParentsLike(userName, "paul")
 
-function getNameTableRow (vote) {
-  const kristinVotedAt = parseDateString(vote.kristinVotedAt)
-  const paulVotedAt = parseDateString(vote.paulVotedAt)
-
-  return [
-    capitalize(vote.name),
-    <TimeAgo date={kristinVotedAt} />,
-    <TimeAgo date={paulVotedAt} />,
-    <ChangeVoteLink name={vote.name} />
-  ]
-}
+//   return {
+//     props: {
+//       userName,
+//     },
+//   }
+// }
 
 export default function (props) {
-  const columns = ['name', 'Kristin Voted At', 'Paul Voted At', '']
-  if (props.userName === 'kristin') {
-    columns[1] = 'You Voted At'
-  } else {
-    columns[2] = 'You Voted At'
-  }
+  const userName = props.voting.currentParentName
+  console.log(userName)
+  const [partnerName, setPartnerName] = useState("")
+  const [userLinks, setUserLinks] = useState(
+    getLinks(userName).namesYouBothLike()
+  )
 
-  const rows = props.mutualVotes.map(getNameTableRow)
+  useEffect(() => {
+    setUserLinks(getLinks(userName).namesYouBothLike(partnerName))
+  }, [partnerName])
 
   return (
     <>
-      <NameTable columns={columns} rows={rows} />
+      <div>
+        <label
+          htmlFor="partnerName"
+          className="block text-sm font-medium leading-5 text-gray-700"
+        >
+          Who do you want to compare lists with?
+        </label>
+        <div className="mt-1 relative rounded-md shadow-sm">
+          <input
+            onChange={(e) => {
+              setPartnerName(e.target.value)
+            }}
+            id="partnerName"
+            className="form-input block w-full sm:text-sm sm:leading-5"
+            placeholder="Joe"
+          />
+        </div>
+        {partnerName.length > 0 && (
+          <div className="mt-5 sm:mt-6">
+            <span className="flex w-full rounded-md shadow-sm">
+              <Link
+                disabled={partnerName.length < 1}
+                href={userLinks.href}
+                as={userLinks.as}
+              >
+                <button
+                  disabled={partnerName.length < 1}
+                  type="button"
+                  className="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-indigo-600 text-base leading-6 font-medium text-white shadow-sm hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo transition ease-in-out duration-150 sm:text-sm sm:leading-5"
+                >
+                  Compare with {capitalize(partnerName)}
+                </button>
+              </Link>
+            </span>
+          </div>
+        )}
+      </div>
     </>
   )
 }
