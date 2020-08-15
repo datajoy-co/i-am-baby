@@ -19,21 +19,14 @@ export default function logInInputCard(props) {
       aria-labelledby="modal-headline"
     >
       <div>
-        <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
-          <svg
-            className="h-6 w-6 text-green-600"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M5 13l4 4L19 7"
-            />
-          </svg>
-        </div>
+        <h2 class="text-3xl leading-9 font-extrabold tracking-tight text-gray-900 sm:text-4xl sm:leading-10">
+          Pick names you like
+          <br class="hidden sm:inline" />
+          <span class="text-indigo-600" id="newsletter-headline">
+            Compare your likes with others
+          </span>
+        </h2>
+
         <div>
           <label
             htmlFor="username"

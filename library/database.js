@@ -18,12 +18,24 @@ export async function deleteVotes(userName, name) {
     .delete()
 }
 
+export async function deleteAllVotesForUser(userName) {
+  return knex("votes").where("userName", userName).delete()
+}
+
 export async function getVotesForUser(userName) {
   return knex("votes")
     .where({
       userName,
     })
     .select("*")
+}
+
+export async function getVoters() {
+  const result = await knex("votes").distinct("userName")
+
+  return result.map((row) => {
+    return row.userName
+  })
 }
 
 export async function countNamesToVoteOn() {

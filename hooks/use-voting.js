@@ -13,10 +13,19 @@ export default function useVoting () {
     })
   }
 
+  async function deleteAllVotesForUser() {
+    await ky.delete(`/api/users/${currentParentName}/votes`, {
+      json: {
+        userName: currentParentName
+      }
+    })
+  }
+
   return {
     currentParentName,
     otherParentName,
     toggleParent,
-    vote
+    vote,
+    deleteAllVotesForUser
   }
 }
