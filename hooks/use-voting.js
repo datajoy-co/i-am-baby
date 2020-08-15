@@ -1,5 +1,5 @@
 import ky from 'ky-universal'
-import useParents from './use-parents.js'
+import useParents from './use-parents'
 
 export default function useVoting () {
   const [currentParentName, otherParentName, toggleParent] = useParents()
@@ -13,10 +13,19 @@ export default function useVoting () {
     })
   }
 
+  async function deleteAllVotesForUser() {
+    await ky.delete(`/api/users/${currentParentName}/votes`, {
+      json: {
+        userName: currentParentName
+      }
+    })
+  }
+
   return {
     currentParentName,
     otherParentName,
     toggleParent,
-    vote
+    vote,
+    deleteAllVotesForUser
   }
 }

@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
-import getLinks from '../../../library/get-links.js'
-import * as database from '../../../library/database.js'
+import getLinks from '../../../library/get-links'
+import * as database from '../../../library/database'
 
 export async function getServerSideProps ({ res, params }) {
   const { userName } = params
@@ -9,7 +9,7 @@ export async function getServerSideProps ({ res, params }) {
   const links = getLinks(userName)
   const redirectLink = links.rateName(nextName)
 
-  // Server-side redirects aren't working for some reason.
+  // Server-side s aren't working for some reason.
   // We'll work on this more in the future.
   //
   // if (res) {

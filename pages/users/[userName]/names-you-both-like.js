@@ -1,146 +1,80 @@
-import React from 'react'
-import Link from 'next/link'
-import Layout from '../../../components/layout.js'
-import * as database from '../../../library/database.js'
-import useLinks from '../../../hooks/use-links.js'
-import { capitalize } from '../../../library/helpers.js'
-import TimeAgo from '../../../configured-libraries/react-time-ago.js'
+import React, { useState, useEffect } from "react"
+import Link from "next/link"
+import getLinks from "../../../library/get-links"
+import { capitalize } from "../../../library/helpers"
+import * as database from "../../../library/database"
 
-const dateFormatter = new Intl.DateTimeFormat('en', {
-  month: 'long',
-  day: 'numeric',
-  hour: 'numeric',
-  minute: 'numeric'
-})
-
-function parseDateString (dateString) {
-  const int = Date.parse(dateString)
-  const date = new Date()
-  date.setTime(int)
-  // Convert to eastern time.
-  date.setHours(date.getHours() - 4)
-  return date
-}
-
-function formatDateString (dateTimeString) {
-  const parsed = Date.parse(dateTimeString)
-  return dateFormatter.format(parsed)
-}
-
-export async function getServerSideProps (context) {
-  const { userName } = context.params
-  const mutualVotes = await database.getNamesBothParentsLike(userName)
+export async function getServerSideProps({ res, params }) {
+  const voters = await database.getVoters()
+  const userName = params.userName
 
   return {
     props: {
       userName,
-      mutualVotes
-    }
+      voters,
+    },
   }
-}
-
-function Cell (props) {
-  if (props.index === 0) {
-    return (
-      <td className='px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-900'>
-        {props.children}
-      </td>
-    )
-  }
-
-  if (props.last) {
-    return (
-      <td className='px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium'>
-        {props.children}
-      </td>
-    )
-  }
-
-  return (
-    <td className='px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500'>
-      {props.children}
-    </td>
-  )
-}
-
-function Row (props) {
-  const even = props.index % 2 === 0
-  const trColor = even ? 'bg-white' : 'bg-gray-50'
-  const cells = props.cells.map((cell, index) => (
-    <Cell key={index} last={index === props.cells.length - 1}>
-      {cell}
-    </Cell>
-  ))
-
-  return <tr className={trColor}>{cells}</tr>
-}
-
-function TableHeading (props) {
-  return (
-    <th className='px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider'>
-      {props.children}
-    </th>
-  )
-}
-
-function Table (props) {
-  const headings = props.columns.map(column => (
-    <TableHeading key={column}>{column}</TableHeading>
-  ))
-  const rows = props.rows.map((row, index) => (
-    <Row key={row[0]} index={index} cells={row} />
-  ))
-
-  return (
-    <div className='flex flex-col'>
-      <div className='-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8 flex justify-center'>
-        <div className='align-middle inline-block min-w-0 shadow overflow-hidden sm:rounded-lg border-b border-gray-200'>
-          <table className='min-w-full'>
-            <thead>
-              <tr>{headings}</tr>
-            </thead>
-            <tbody>{rows}</tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function ChangeVoteLink (props) {
-  const links = useLinks()
-  const rateNameLink = links.currentParent.rateName(props.name)
-
-  return (
-    <Link href={rateNameLink.href} as={rateNameLink.as}>
-      <a className='text-indigo-600 hover:text-indigo-900'>Change Your Vote</a>
-    </Link>
-  )
 }
 
 export default function (props) {
-  const columns = ['name', 'Kristin Voted At', 'Paul Voted At', '']
-  if (props.userName === 'kristin') {
-    columns[1] = 'You Voted At'
-  } else {
-    columns[2] = 'You Voted At'
-  }
+  const { userName, voters } = props
+  const [partnerName, setPartnerName] = useState(voters[0])
+  const [userLinks, setUserLinks] = useState(
+    getLinks(userName).namesYouBothLike()
+  )
 
-  const rows = props.mutualVotes.map(vote => {
-    const kristinVotedAt = parseDateString(vote.kristinVotedAt)
-    const paulVotedAt = parseDateString(vote.paulVotedAt)
-
-    return [
-      capitalize(vote.name),
-      <TimeAgo date={kristinVotedAt} />,
-      <TimeAgo date={paulVotedAt} />,
-      <ChangeVoteLink name={vote.name} />
-    ]
-  })
+  useEffect(() => {
+    setUserLinks(getLinks(userName).namesYouBothLike(partnerName.toLowerCase()))
+  }, [partnerName])
 
   return (
     <>
-      <Table columns={columns} rows={rows} />
+      <div class="bg-white shadow sm:rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+          <div>
+            <label
+              htmlFor="partnerName"
+              className="block text-sm leading-5 font-medium text-gray-700"
+            >
+              Who do you want to compare lists with?
+            </label>
+            <select
+              value={capitalize(partnerName)}
+              onChange={(e) => {
+                setPartnerName(e.target.value.toLowerCase())
+              }}
+              id="location"
+              className="mt-1 form-select block w-full pl-3 pr-10 py-2 text-base leading-6 border-gray-300 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
+            >
+              {voters.sort().filter((voter) => {
+                return voter != userName
+              }).map((voter) => {
+                return <option>{capitalize(voter)}</option>
+              })}
+            </select>
+          </div>
+
+          {partnerName.length > 0 && (
+            <div className="mt-5 sm:mt-6">
+              <span className="flex w-full rounded-md shadow-sm">
+                <Link
+                  disabled={partnerName.length < 1}
+                  href={userLinks.href}
+                  as={userLinks.as}
+                >
+                  <button
+                    disabled={partnerName.length < 1}
+                    type="button"
+                    className="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-indigo-600 text-base leading-6 font-medium text-white shadow-sm hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo transition ease-in-out duration-150 sm:text-sm sm:leading-5"
+                  >
+                    Compare with {capitalize(partnerName)}
+                  </button>
+                </Link>
+              </span>
+            </div>
+          )}
+        </div>
+      </div>
     </>
   )
 }

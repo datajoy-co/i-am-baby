@@ -1,4 +1,4 @@
-import { percent } from '../library/helpers.js'
+import { percent } from '../library/helpers'
 
 export default function ProgressBar (props) {
   const percentProgress = percent(props.progress, { decimalPlaces: 0 })

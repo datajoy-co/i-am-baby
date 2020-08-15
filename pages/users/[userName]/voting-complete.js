@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import useLinks from '../../../hooks/use-links.js'
+import useLinks from '../../../hooks/use-links'
 
 export default function () {
   const links = useLinks()
