@@ -28,7 +28,6 @@ async function deleteAllVotesForUser(request, response) {
 }
 
 export default async function (request, response) {
-  console.log(request)
   if (request.method === "POST") {
     return createVote(request, response)
   } else if (request.method === "GET") {
