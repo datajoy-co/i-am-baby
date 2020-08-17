@@ -5,6 +5,7 @@ import { capitalize } from '../library/helpers'
 import useLinks from '../hooks/use-links'
 import useParents from '../hooks/use-parents'
 import ProfileImage from '../components/profile-image'
+import ContactUsButton from './contact-us-button'
 
 function SwitchParent (props) {
   const handleClick = props.toggleParent
@@ -43,6 +44,7 @@ function ProfileDropdown (props) {
   return (
     <div className='ml-3 relative'>
       <div>
+          
         <button
           className='flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition duration-150 ease-in-out'
           id='user-menu'
@@ -51,7 +53,8 @@ function ProfileDropdown (props) {
           onClick={toggleSwitcher}
           onBlur={toggleSwitcher}
         >
-          <ProfileImage parentName={currentParentName} />
+        
+          {/* <ProfileImage parentName={currentParentName} /> */}
         </button>
       </div>
       {/* <!-- */}
@@ -147,8 +150,10 @@ export default function nav (props) {
               </NavLink>
             </div>
           </div>
+          
           <div className='hidden sm:ml-6 sm:flex sm:items-center'>
-            <ProfileDropdown />
+          <ContactUsButton></ContactUsButton>
+            {/* <ProfileDropdown /> */}
           </div>
           <div className='-mr-2 flex items-center sm:hidden'>
             {/* Mobile menu button --> */}

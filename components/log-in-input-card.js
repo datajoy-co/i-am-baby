@@ -19,10 +19,10 @@ export default function logInInputCard(props) {
       aria-labelledby="modal-headline"
     >
       <div>
-        <h2 class="text-3xl leading-9 font-extrabold tracking-tight text-gray-900 sm:text-4xl sm:leading-10">
+        <h2 className="text-3xl leading-9 font-extrabold tracking-tight text-gray-900 sm:text-4xl sm:leading-10">
           Pick names you like
-          <br class="hidden sm:inline" />
-          <span class="text-indigo-600" id="newsletter-headline">
+          <br className="hidden sm:inline" />
+          <span className="text-indigo-600" id="newsletter-headline">
             Compare your likes with others
           </span>
         </h2>
@@ -40,7 +40,7 @@ export default function logInInputCard(props) {
                 setUserName(e.target.value)
               }}
               id="username"
-              class="form-input block w-full sm:text-sm sm:leading-5"
+              className="form-input block w-full sm:text-sm sm:leading-5"
               placeholder="Joe"
             />
           </div>
